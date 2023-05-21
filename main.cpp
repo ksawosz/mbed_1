@@ -23,6 +23,7 @@ int main()
             lcd.SetBackColor(LCD_COLOR_RED);
             lcd.SetTextColor(LCD_COLOR_WHITE);
             lcd.DisplayChar(0, ucRectCounter*80, ucRectCounter+48);
+            
         }
       
       ts.GetState(&TS_State);      
