@@ -4,6 +4,7 @@
 
 LCD_DISCO_F429ZI lcd;
 TS_DISCO_F429ZI ts;
+uint16_t Y;
 
 int main()
 {
@@ -23,13 +24,20 @@ int main()
             lcd.SetBackColor(LCD_COLOR_RED);
             lcd.SetTextColor(LCD_COLOR_WHITE);
             lcd.DisplayChar(0, ucRectCounter*80, ucRectCounter+48);
-            
         }
       
       ts.GetState(&TS_State);      
       if (TS_State.TouchDetected)
       {
-
+          if(TS_State.X < 81)
+          {
+            Y = TS_State.Y/80;
+            lcd.SetTextColor(LCD_COLOR_GREEN);
+            lcd.FillRect(0, Y*80, 80, 80);
+            lcd.SetBackColor(LCD_COLOR_RED);
+            lcd.SetTextColor(LCD_COLOR_WHITE);
+            lcd.DisplayChar(0, Y*80, Y+48);
+          }
       }
       wait(0.1);
     }
