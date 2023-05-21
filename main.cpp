@@ -8,50 +8,28 @@ TS_DISCO_F429ZI ts;
 int main()
 {
     TS_StateTypeDef TS_State;
-    uint16_t x, y;
-    uint8_t text[30];
-    uint8_t status;
-  
-    BSP_LCD_SetFont(&Font20);
-  
-    lcd.DisplayStringAt(0, LINE(5), (uint8_t *)"TOUCHSCREEN", CENTER_MODE);
-    lcd.DisplayStringAt(0, LINE(6), (uint8_t *)"DEMO", CENTER_MODE);
-    wait(1);
-  
-    status = ts.Init(lcd.GetXSize(), lcd.GetYSize());
-  
-    if (status != TS_OK)
-    {
-      lcd.Clear(LCD_COLOR_RED);
-      lcd.SetBackColor(LCD_COLOR_RED);
-      lcd.SetTextColor(LCD_COLOR_WHITE);
-      lcd.DisplayStringAt(0, LINE(5), (uint8_t *)"TOUCHSCREEN", CENTER_MODE);
-      lcd.DisplayStringAt(0, LINE(6), (uint8_t *)"INIT FAIL", CENTER_MODE);
-    }
-    else
-    {
-      lcd.Clear(LCD_COLOR_GREEN);
-      lcd.SetBackColor(LCD_COLOR_GREEN);
-      lcd.SetTextColor(LCD_COLOR_WHITE);
-      lcd.DisplayStringAt(0, LINE(5), (uint8_t *)"TOUCHSCREEN", CENTER_MODE);
-      lcd.DisplayStringAt(0, LINE(6), (uint8_t *)"INIT OK", CENTER_MODE);
-    }
-    
-    wait(1);
-    lcd.Clear(LCD_COLOR_BLUE);
-    lcd.SetBackColor(LCD_COLOR_BLUE);
-    lcd.SetTextColor(LCD_COLOR_WHITE);
+
+    lcd.Clear(LCD_COLOR_BLACK);
+    BSP_LCD_SetFont(&Font24);
     
     while(1)
     {
+        for(uint8_t ucRectCounter = 0; ucRectCounter < 4; ucRectCounter++){
+            lcd.SetTextColor(LCD_COLOR_BLUE);
+            lcd.FillRect(0, ucRectCounter*80, 80, 80);
+            lcd.SetTextColor(LCD_COLOR_GREEN);
+            lcd.DrawRect(0, ucRectCounter*80, 80, 80);
+
+            lcd.SetBackColor(LCD_COLOR_RED);
+            lcd.SetTextColor(LCD_COLOR_WHITE);
+            lcd.DisplayChar(0, ucRectCounter*80, ucRectCounter+48);
+        }
       
       ts.GetState(&TS_State);      
       if (TS_State.TouchDetected)
       {
-        x = TS_State.X;
-        y = TS_State.Y;
-        sprintf((char*)text, "x=%d y=%d    ", x, y);
-        lcd.DisplayStringAt(0, LINE(0), (uint8_t *)&text, LEFT_MODE);
+
       }
+      wait(0.1);
     }
 }
